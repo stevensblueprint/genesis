@@ -1,5 +1,5 @@
 function App() {
-  return <>Genesis</>;
+  return <>Genesis App</>;
 }
 
 export default App;
