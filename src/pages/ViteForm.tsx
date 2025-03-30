@@ -99,7 +99,6 @@ const ViteForm = () => {
       }
 
       const data = await response.json();
-      // console.log('Success:', data);
       setSuccessMessage(
         `Project deployment ID ${data.deployment_id} initiated successfully! You'll receive an e-mail when the deployment is complete.`
       );
@@ -225,7 +224,51 @@ const ViteForm = () => {
           />
         )}
 
-        <Form form={form} layout="vertical" onFinish={onFinish}>
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={onFinish}
+          onValuesChange={(changedValues, allValues) => {
+            if (changedValues.config?.name) {
+              const newStackName = changedValues.config.name;
+              form.setFieldsValue({
+                config: {
+                  ...allValues.config,
+                  githubRepoName: newStackName,
+                  dev: {
+                    ...allValues.config.dev,
+                    pipelineConfig: {
+                      ...allValues.config.dev?.pipelineConfig,
+                      name: `${newStackName}-pipeline-test`,
+                    },
+                    s3Config: {
+                      ...allValues.config.dev?.s3Config,
+                      bucketName: `${newStackName}-bucket-test`,
+                      artifactsBucket: `${newStackName}-artifacts-test`,
+                    },
+                  },
+                  prod: {
+                    ...allValues.config.prod,
+                    pipelineConfig: {
+                      ...allValues.config.prod?.pipelineConfig,
+                      name: `${newStackName}-pipeline-prod`,
+                    },
+                    s3Config: {
+                      ...allValues.config.prod?.s3Config,
+                      bucketName: `${newStackName}-bucket-prod`,
+                      artifactsBucket: `${newStackName}-artifacts-prod`,
+                    },
+                  },
+                },
+              });
+            }
+          }}
+          initialValues={{
+            config: {
+              githubRepoOwner: "stevensblueprint",
+            },
+          }}
+        >
           <Divider orientation="left">Stack Information</Divider>
           <Form.Item
             name={["config", "name"]}
@@ -233,42 +276,18 @@ const ViteForm = () => {
             rules={[{ message: "Please input the stack name" }]}
             tooltip="A unique name for your project stack"
           >
-            <Input placeholder="my-vite-app" />
+            <Input />
           </Form.Item>
 
           <Divider orientation="left">GitHub Configuration</Divider>
           <div className="space-y-4">
             <Form.Item
-              name={["config", "githubRepoOwner"]}
-              label="GitHub Repository Owner"
-              rules={[{ message: "Please input the GitHub repository owner" }]}
-              tooltip="The GitHub username or organization that owns the repository"
-            >
-              <Input
-                prefix={<GithubOutlined className="text-gray-400" />}
-                placeholder="username or organization"
-              />
-            </Form.Item>
-
-            <Form.Item
               name={["config", "githubRepoName"]}
-              label="GitHub Repository Name"
+              label="Name of GitHub Repository"
               rules={[{ message: "Please input the GitHub repository name" }]}
               tooltip="The name of the GitHub repository"
             >
-              <Input
-                prefix={<GithubOutlined className="text-gray-400" />}
-                placeholder="your-vite-repo"
-              />
-            </Form.Item>
-
-            <Form.Item
-              name={["config", "githubAccessTokenName"]}
-              label="GitHub Access Token Name"
-              rules={[{ message: "Please input the GitHub access token name" }]}
-              tooltip="The name of your GitHub access token for authentication"
-            >
-              <Input.Password placeholder="GITHUB_TOKEN" />
+              <Input prefix={<GithubOutlined className="text-gray-400" />} />
             </Form.Item>
           </div>
 
