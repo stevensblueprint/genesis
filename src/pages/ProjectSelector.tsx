@@ -14,20 +14,38 @@ const ProjectSelector = () => {
 
   const projects = [
     { imageUrl: vite, title: "Vite", alt: "Vite", path: "/vite_form" },
-    { imageUrl: spring, title: "Spring Boot", alt: "Spring Boot", path: "/spring_form" },
+    {
+      imageUrl: spring,
+      title: "Spring Boot",
+      alt: "Spring Boot",
+      path: "/spring_form",
+    },
     { imageUrl: react, title: "React", alt: "React", path: "/react_form" },
-    { imageUrl: lume, title: "LumeCMS", alt: "LumeCMS", path: "/lume_form" },
+    { imageUrl: lume, title: "Lume", alt: "Lume", path: "/lume_form" },
   ];
 
   return (
     <div className="flex flex-col">
       <div className="flex items-center justify-between bg-[#0078e8]">
         <div className="flex items-center py-4 px-4">
-          <img src={logo} alt="Stevens Blueprint Logo" className="h-12 w-auto"/>
+          <img
+            src={logo}
+            alt="Stevens Blueprint Logo"
+            className="h-12 w-auto"
+          />
         </div>
         <div className="flex items-center">
-          <Button type="default" className="mr-4" ghost onClick={() => navigate('/deployments')}>Deployments</Button>
-          <Button type="default" className="mr-4" ghost onClick={signOut}>Sign Out</Button>
+          <Button
+            type="default"
+            className="mr-4"
+            ghost
+            onClick={() => navigate("/deployments")}
+          >
+            Deployments
+          </Button>
+          <Button type="default" className="mr-4" ghost onClick={signOut}>
+            Sign Out
+          </Button>
         </div>
       </div>
       <div className="flex-grow flex items-center justify-center p-6">
