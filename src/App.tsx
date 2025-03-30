@@ -1,16 +1,19 @@
 import { Authenticator } from "./components/Authenticator"  
 import "@aws-amplify/ui-react/styles.css"
-import { Button } from "antd"
-import { useAuthenticator } from "@aws-amplify/ui-react"
 import ProjectSelector from "./pages/ProjectSelector"
+import ProjectForm from "./pages/ProjectForm"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 const App = () => {
-  const { user, signOut } = useAuthenticator((context) => [context.user]);
   return (
     <>
       <Authenticator>
-        <ProjectSelector />
-        <Button type="primary" onClick={signOut}>Logout</Button>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<ProjectSelector />} />
+            <Route path="/form" element={<ProjectForm />} />
+          </Routes>
+        </BrowserRouter>
       </Authenticator>
     </>
   )
