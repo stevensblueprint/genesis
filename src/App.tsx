@@ -1,8 +1,9 @@
 import { Authenticator } from "./components/Authenticator"  
 import "@aws-amplify/ui-react/styles.css"
 import ProjectSelector from "./pages/ProjectSelector"
-import ProjectForm from "./pages/ProjectForm"
+import ViteForm from "./pages/ViteForm"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Table from "./pages/Table"
 
 const App = () => {
   return (
@@ -11,7 +12,8 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<ProjectSelector />} />
-            <Route path="/form" element={<ProjectForm />} />
+            <Route path="/vite_form" element={<ViteForm />} />
+            <Route path="/deployments" element={<Table />} />
           </Routes>
         </BrowserRouter>
       </Authenticator>
