@@ -16,6 +16,7 @@ import {
   MinusCircleOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
+import { useWatch } from "antd/es/form/Form";
 
 const { Title } = Typography;
 const { Panel } = Collapse;
@@ -114,86 +115,98 @@ const ViteForm = () => {
     environment,
   }: {
     environment: "dev" | "prod";
-  }) => (
-    <>
-      <Form.Item
-        name={["config", environment, "deploy"]}
-        label="Deploy Environment"
-        valuePropName="checked"
-        initialValue={environment === "prod"}
-      >
-        <Switch />
-      </Form.Item>
+  }) => {
+    const deployEnabled = !useWatch(["config", environment, "deploy"]);
+    return (
+      <>
+        <Form.Item
+          name={["config", environment, "deploy"]}
+          label="Deploy Environment"
+          valuePropName="checked"
+          initialValue={environment === "prod"}
+        >
+          <Switch />
+        </Form.Item>
 
-      <Form.Item
-        name={["config", environment, "environmentType"]}
-        label="Environment Type"
-        initialValue={environment}
-      >
-        <Input placeholder="environment-type" />
-      </Form.Item>
+        <Form.Item
+          name={["config", environment, "environmentType"]}
+          label="Environment Type"
+          initialValue={environment}
+        >
+          <Input placeholder="environment-type" disabled={deployEnabled} />
+        </Form.Item>
 
-      <Form.Item
-        name={["config", environment, "branchName"]}
-        label="Branch Name"
-        initialValue={environment === "prod" ? "main" : "dev"}
-        rules={[{ message: "Please input the branch name" }]}
-      >
-        <Input placeholder="branch-name" />
-      </Form.Item>
+        <Form.Item
+          name={["config", environment, "branchName"]}
+          label="Branch Name"
+          initialValue={environment === "prod" ? "main" : "dev"}
+          rules={[{ message: "Please input the branch name" }]}
+        >
+          <Input placeholder="branch-name" disabled={deployEnabled} />
+        </Form.Item>
 
-      <Divider orientation="left">Pipeline Configuration</Divider>
-      <Form.Item
-        name={["config", environment, "pipelineConfig", "name"]}
-        label="Pipeline Name"
-        rules={[{ message: "Please input the pipeline name" }]}
-      >
-        <Input placeholder={`${environment}-pipeline`} />
-      </Form.Item>
+        <Divider orientation="left">Pipeline Configuration</Divider>
+        <Form.Item
+          name={["config", environment, "pipelineConfig", "name"]}
+          label="Pipeline Name"
+          rules={[{ message: "Please input the pipeline name" }]}
+        >
+          <Input
+            placeholder={`${environment}-pipeline`}
+            disabled={deployEnabled}
+          />
+        </Form.Item>
 
-      <Divider orientation="left">S3 Configuration</Divider>
-      <Form.Item
-        name={["config", environment, "s3Config", "bucketName"]}
-        label="Bucket Name"
-        rules={[{ message: "Please input the bucket name" }]}
-      >
-        <Input placeholder={`${environment}-bucket-name`} />
-      </Form.Item>
+        <Divider orientation="left">S3 Configuration</Divider>
+        <Form.Item
+          name={["config", environment, "s3Config", "bucketName"]}
+          label="Bucket Name"
+          rules={[{ message: "Please input the bucket name" }]}
+        >
+          <Input
+            placeholder={`${environment}-bucket-name`}
+            disabled={deployEnabled}
+          />
+        </Form.Item>
 
-      <Form.Item
-        name={["config", environment, "s3Config", "artifactsBucket"]}
-        label="Artifacts Bucket"
-        rules={[{ message: "Please input the artifacts bucket name" }]}
-      >
-        <Input placeholder={`${environment}-artifacts-bucket`} />
-      </Form.Item>
+        <Form.Item
+          name={["config", environment, "s3Config", "artifactsBucket"]}
+          label="Artifacts Bucket"
+          rules={[{ message: "Please input the artifacts bucket name" }]}
+        >
+          <Input
+            placeholder={`${environment}-artifacts-bucket`}
+            disabled={deployEnabled}
+          />
+        </Form.Item>
 
-      <Form.Item
-        name={["config", environment, "s3Config", "publicAccess"]}
-        label="Public Access"
-        valuePropName="checked"
-        initialValue={environment === "prod"}
-      >
-        <Switch />
-      </Form.Item>
+        <Form.Item
+          name={["config", environment, "s3Config", "publicAccess"]}
+          label="Public Access"
+          valuePropName="checked"
+          initialValue={environment === "prod"}
+        >
+          <Switch disabled={deployEnabled} />
+        </Form.Item>
 
-      <Form.Item
-        name={["config", environment, "s3Config", "indexFile"]}
-        label="Index File"
-        initialValue="index.html"
-      >
-        <Input />
-      </Form.Item>
+        <Form.Item
+          name={["config", environment, "s3Config", "indexFile"]}
+          label="Index File"
+          initialValue="index.html"
+        >
+          <Input disabled={deployEnabled} />
+        </Form.Item>
 
-      <Form.Item
-        name={["config", environment, "s3Config", "errorFile"]}
-        label="Error File"
-        initialValue="index.html"
-      >
-        <Input />
-      </Form.Item>
-    </>
-  );
+        <Form.Item
+          name={["config", environment, "s3Config", "errorFile"]}
+          label="Error File"
+          initialValue="index.html"
+        >
+          <Input disabled={deployEnabled} />
+        </Form.Item>
+      </>
+    );
+  };
 
   return (
     <div className="min-h-screen flex justify-center items-center p-6">
