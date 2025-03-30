@@ -6,9 +6,11 @@ import vite from "../assets/project_logos/vite.svg";
 import lume from "../assets/project_logos/lume.svg";
 import ProjectCard from "../components/ProjectCard";
 import { useAuthenticator } from "@aws-amplify/ui-react";
+import { useNavigate } from "react-router-dom";
 
 const ProjectSelector = () => {
   const { signOut } = useAuthenticator((context) => [context.user]);
+  const navigate = useNavigate();
 
   const projects = [
     { imageUrl: vite, title: "Vite", alt: "Vite", path: "/vite_form" },
@@ -23,7 +25,10 @@ const ProjectSelector = () => {
         <div className="flex items-center py-4 px-4">
           <img src={logo} alt="Stevens Blueprint Logo" className="h-12 w-auto"/>
         </div>
-        <Button type="default" className="mr-4" ghost onClick={signOut}>Sign Out</Button>
+        <div className="flex items-center">
+          <Button type="default" className="mr-4" ghost onClick={() => navigate('/deployments')}>Deployments</Button>
+          <Button type="default" className="mr-4" ghost onClick={signOut}>Sign Out</Button>
+        </div>
       </div>
       <div className="flex-grow flex items-center justify-center p-6">
         <div className="text-center">
